@@ -1,0 +1,33 @@
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+.next/
+out/
+dist/
+build/
+
+# Python and local data
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.db
+*.sqlite*
+cache/
+exports/
+
+# Logs and operating system files
+*.log
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
