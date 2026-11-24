@@ -60,41 +60,41 @@ export async function POST(request: Request) {
 
   try {
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/interactions",
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": apiKey
+          "Content-Type": "application/json"
         },
         signal: AbortSignal.timeout(12000),
         body: JSON.stringify({
-          model: "gemini-3.8-flash",
-          system_instruction: portfolioContext,
-          input: conversation,
-          store: false,
-          generation_config: {
-            thinking_level: "low",
-            max_output_tokens: 250
+          system_instruction: {
+            parts: [{ text: portfolioContext }]
+          },
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: conversation }]
+            }
+          ],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 300
           }
         })
       }
     );
 
     const data = (await response.json()) as {
-      steps?: Array<{
-        type?: string;
-        content?: Array<{ type?: string; text?: string }>;
+      candidates?: Array<{
+        content?: {
+          parts?: Array<{ text?: string }>;
+        };
       }>;
       error?: { message?: string };
     };
-    const reply = data.steps
-      ?.filter((step) => step.type === "model_output")
-      .flatMap((step) => step.content ?? [])
-      .filter((part) => part.type === "text")
-      .map((part) => part.text ?? "")
-      .join("\n")
-      .trim();
+
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
     if (!response.ok || !reply) {
       return NextResponse.json(
