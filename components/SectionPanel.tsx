@@ -26,7 +26,7 @@ export function SectionPanel({ activeSection }: SectionPanelProps) {
   return (
     <motion.aside
       key={activeSection}
-      className="flex flex-col h-[72vh] min-h-[500px] overflow-hidden rounded-2xl border border-neonBlue/30 bg-black/50 p-4 shadow-neon backdrop-blur-xl sm:p-5"
+      className="flex flex-col min-h-[500px] overflow-hidden rounded-2xl border border-neonBlue/30 bg-black/50 p-4 shadow-neon backdrop-blur-xl sm:p-5 lg:h-[74vh]"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}

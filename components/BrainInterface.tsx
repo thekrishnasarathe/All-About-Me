@@ -59,7 +59,7 @@ export function BrainInterface({
     <motion.section
       ref={containerRef}
       key="brain-interface"
-      className="brain-interface relative h-[72vh] min-h-[500px] overflow-hidden rounded-2xl border border-neonBlue/30 bg-black/25 shadow-neon backdrop-blur-xl"
+      className="brain-interface relative min-h-[520px] overflow-hidden rounded-2xl border border-neonBlue/30 bg-black/25 shadow-neon backdrop-blur-xl lg:h-[74vh]"
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}

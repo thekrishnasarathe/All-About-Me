@@ -73,6 +73,19 @@ export default function HomePage() {
 
   const { playBoot, playClick, playAmbient } = useUiSounds(soundEnabled);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.sessionStorage.getItem("has_booted") === "true") {
+      setIsBooted(true);
+    }
+  }, []);
+
+  const handleBootComplete = () => {
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("has_booted", "true");
+    }
+    setIsBooted(true);
+  };
+
   const selectSection = (section: SectionId) => {
     setActiveSection(section);
     if (mode === "os") return;
@@ -87,6 +100,13 @@ export default function HomePage() {
     } else {
       setMode("brain");
     }
+
+    setTimeout(() => {
+      const el = document.getElementById("interactive-workspace");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 80);
   };
 
   useEffect(() => {
@@ -125,7 +145,7 @@ export default function HomePage() {
   return (
     <main
       className={clsx(
-        "relative min-h-screen overflow-hidden px-4 pb-6 pt-4 sm:px-8 sm:pt-6",
+        "relative min-h-screen overflow-x-hidden px-4 pb-6 pt-4 sm:px-8 sm:pt-6",
         hackerTheme ? "theme-hacker" : "theme-cyber"
       )}
     >
@@ -221,13 +241,13 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-none sm:flex-wrap">
             {sectionOrder.map((section) => (
               <button
                 key={section}
                 type="button"
                 className={clsx(
-                  "flex items-center justify-center rounded-full border px-3 py-1 font-display text-xs uppercase tracking-wider transition-all",
+                  "flex shrink-0 items-center justify-center rounded-full border px-3 py-1 font-display text-xs uppercase tracking-wider transition-all",
                   section === activeSection
                     ? "border-neonBlue bg-neonBlue/25 text-neonBlue shadow-[0_0_15px_rgba(0,240,255,0.4)]"
                     : "border-neonBlue/35 bg-black/45 text-textMain/80 hover:bg-neonBlue/15 hover:text-white"
@@ -247,6 +267,12 @@ export default function HomePage() {
           onExplore={() => {
             setMode("brain");
             setActiveSection("profile");
+            setTimeout(() => {
+              const el = document.getElementById("interactive-workspace");
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }, 80);
           }}
           onViewProjects={() => {
             selectSection("projects");
@@ -259,14 +285,16 @@ export default function HomePage() {
         {isAssistantOpen && <PortfolioAssistant onClose={() => setIsAssistantOpen(false)} />}
 
         {mode === "os" ? (
-          <KrishnaOS
-            activeSection={activeSection}
-            onSectionChange={selectSection}
-            onUnlockSecret={() => setSecretMode(true)}
-            onClickSound={playClick}
-          />
+          <div id="interactive-workspace" className="scroll-mt-6">
+            <KrishnaOS
+              activeSection={activeSection}
+              onSectionChange={selectSection}
+              onUnlockSecret={() => setSecretMode(true)}
+              onClickSound={playClick}
+            />
+          </div>
         ) : (
-          <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr]">
+          <div id="interactive-workspace" className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr] scroll-mt-6">
             <AnimatePresence mode="wait">
               {mode === "brain" ? (
                 <BrainInterface
@@ -317,7 +345,7 @@ export default function HomePage() {
               setSoundEnabled(true);
               playBoot(true);
             }}
-            onComplete={() => setIsBooted(true)}
+            onComplete={handleBootComplete}
           />
         )}
       </AnimatePresence>

@@ -63,22 +63,40 @@ export function BootSequence({ onStart, onComplete }: BootSequenceProps) {
             <p className="font-mono text-sm text-textMain/70 sm:text-base">
               Enter the Cognitive System Interface
             </p>
-            <button
-              type="button"
-              className="mx-auto flex w-fit items-center justify-center rounded-md border border-neonBlue/60 px-5 py-2 font-mono text-sm uppercase tracking-[0.2em] text-neonBlue transition hover:bg-neonBlue/20"
-              onClick={() => {
-                setStarted(true);
-                onStart();
-              }}
-            >
-              Start System
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+              <button
+                type="button"
+                className="w-full sm:w-auto flex items-center justify-center rounded-md border border-neonBlue/60 bg-neonBlue/15 px-6 py-2.5 font-mono text-xs uppercase tracking-[0.2em] text-neonBlue transition hover:bg-neonBlue/30 shadow-[0_0_15px_rgba(0,240,255,0.25)]"
+                onClick={() => {
+                  setStarted(true);
+                  onStart();
+                }}
+              >
+                Start System Boot
+              </button>
+              <button
+                type="button"
+                className="w-full sm:w-auto flex items-center justify-center rounded-md border border-white/20 bg-white/5 px-6 py-2.5 font-mono text-xs uppercase tracking-[0.16em] text-textMain/80 transition hover:border-white/40 hover:bg-white/10"
+                onClick={onComplete}
+              >
+                Skip Directly to Portfolio →
+              </button>
+            </div>
           </div>
         ) : (
           <div className="space-y-5">
-            <h2 className="font-display text-xl uppercase tracking-[0.2em] text-neonBlue sm:text-2xl">
-              System Boot Sequence
-            </h2>
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <h2 className="font-display text-xl uppercase tracking-[0.2em] text-neonBlue sm:text-2xl">
+                System Boot Sequence
+              </h2>
+              <button
+                type="button"
+                onClick={onComplete}
+                className="font-mono text-xs text-textMain/60 hover:text-neonBlue transition-colors underline"
+              >
+                Skip →
+              </button>
+            </div>
             <div className="space-y-2 font-mono text-xs text-textMain sm:text-sm">
               {visibleLines.map((line) => (
                 <motion.p

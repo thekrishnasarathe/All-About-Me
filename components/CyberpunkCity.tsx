@@ -75,7 +75,7 @@ export function CyberpunkCity({
   return (
     <motion.section
       key="cyber-city"
-      className="relative flex h-[72vh] min-h-[500px] flex-col overflow-hidden rounded-2xl border border-cyberPink/40 bg-black/40 p-4 shadow-cyber backdrop-blur-xl sm:p-5"
+      className="relative flex min-h-[540px] flex-col overflow-hidden rounded-2xl border border-cyberPink/40 bg-black/40 p-3.5 shadow-cyber backdrop-blur-xl sm:p-5 lg:h-[74vh]"
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -18 }}
@@ -86,7 +86,7 @@ export function CyberpunkCity({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_80%,rgba(0,240,255,0.12),transparent_50%)] pointer-events-none" />
 
       {/* Top Districts Bar */}
-      <div className="relative z-10 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+      <div className="relative z-10 flex gap-2 overflow-x-auto pb-1.5 scrollbar-none sm:grid sm:grid-cols-4 lg:grid-cols-7">
         {districts.map((district, index) => {
           const isActive = district.id === activeSection;
           const Icon = district.icon;
@@ -96,7 +96,7 @@ export function CyberpunkCity({
               key={district.id}
               type="button"
               className={clsx(
-                "group relative flex flex-col justify-between rounded-xl border p-2 text-left backdrop-blur-md transition-all duration-300",
+                "group relative flex shrink-0 sm:shrink min-w-[125px] sm:min-w-0 flex-col justify-between rounded-xl border p-2 text-left backdrop-blur-md transition-all duration-300",
                 isActive
                   ? "border-cyberPink bg-cyberPink/20 shadow-[0_0_20px_rgba(255,47,209,0.45)]"
                   : "border-cyberPink/30 bg-black/50 hover:border-cyberPink/70 hover:bg-cyberPink/10"

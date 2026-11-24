@@ -318,7 +318,7 @@ export function KrishnaOS({
   return (
     <motion.section
       key="boss-os"
-      className="relative h-[72vh] min-h-[500px] overflow-hidden rounded-2xl border border-neonBlue/30 bg-black/40 p-4 shadow-neon backdrop-blur-xl sm:p-5"
+      className="relative flex min-h-[540px] flex-col overflow-hidden rounded-2xl border border-neonBlue/30 bg-black/40 p-3.5 shadow-neon backdrop-blur-xl sm:p-5 lg:h-[74vh]"
       initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.97 }}
@@ -336,7 +336,7 @@ export function KrishnaOS({
       </div>
 
       {/* Desktop App Icons */}
-      <div className="relative z-10 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
+      <div className="relative z-10 flex gap-2 overflow-x-auto pb-1.5 scrollbar-none sm:grid sm:grid-cols-4 lg:grid-cols-8">
         {desktopApps.map((app) => {
           const Icon = app.icon;
           const isOpen = openWindows.includes(app.id);
@@ -345,7 +345,7 @@ export function KrishnaOS({
               key={app.id}
               type="button"
               className={clsx(
-                "flex flex-col items-center justify-center rounded-lg border px-2 py-2.5 transition",
+                "flex shrink-0 sm:shrink min-w-[90px] sm:min-w-0 flex-col items-center justify-center rounded-lg border px-2 py-2 transition",
                 isOpen
                   ? "border-neonBlue bg-neonBlue/20 shadow-[0_0_15px_rgba(0,240,255,0.3)]"
                   : "border-neonBlue/30 bg-black/50 hover:border-neonBlue/70 hover:bg-neonBlue/15"
@@ -368,7 +368,7 @@ export function KrishnaOS({
       </div>
 
       {/* Active Windows Grid */}
-      <div className="relative z-10 mt-3 grid h-[74%] min-h-0 gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="relative z-10 mt-3 grid flex-1 min-h-0 gap-3 lg:grid-cols-[1.1fr_0.9fr]">
         <AnimatePresence>
           {openWindows.includes("terminal") && (
             <motion.div
