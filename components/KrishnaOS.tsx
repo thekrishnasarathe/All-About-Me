@@ -18,7 +18,8 @@ import {
   Github,
   CheckCircle2,
   FileDown,
-  Award
+  Award,
+  X
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { ComponentType } from "react";
@@ -37,15 +38,15 @@ const desktopApps: Array<{
   title: string;
   icon: ComponentType<{ className?: string }>;
 }> = [
-  { id: "profile", title: "Profile.sys", icon: UserRound },
-  { id: "experience", title: "Experience.exe", icon: Briefcase },
-  { id: "projects", title: "Projects.exe", icon: FolderKanban },
-  { id: "certificates", title: "Certs.key", icon: Award },
-  { id: "skills", title: "Skills.ai", icon: Binary },
-  { id: "journey", title: "Timeline.mem", icon: Bot },
-  { id: "contact", title: "Contact.sys", icon: PhoneCall },
-  { id: "terminal", title: "Terminal.cmd", icon: Terminal }
-];
+    { id: "profile", title: "Profile.sys", icon: UserRound },
+    { id: "experience", title: "Experience.exe", icon: Briefcase },
+    { id: "projects", title: "Projects.exe", icon: FolderKanban },
+    { id: "certificates", title: "Certs.key", icon: Award },
+    { id: "skills", title: "Skills.ai", icon: Binary },
+    { id: "journey", title: "Timeline.mem", icon: Bot },
+    { id: "contact", title: "Contact.sys", icon: PhoneCall },
+    { id: "terminal", title: "Terminal.cmd", icon: Terminal }
+  ];
 
 export function KrishnaOS({
   activeSection,
@@ -53,14 +54,23 @@ export function KrishnaOS({
   onUnlockSecret,
   onClickSound
 }: KrishnaOSProps) {
-  const [openWindows, setOpenWindows] = useState<WindowId[]>(["terminal"]);
+  const [openWindows, setOpenWindows] = useState<WindowId[]>(["terminal", activeSection]);
 
-  const toggleWindow = (windowId: WindowId) => {
-    setOpenWindows((current) =>
-      current.includes(windowId)
-        ? current.filter((item) => item !== windowId)
-        : [...current, windowId]
-    );
+  const handleAppClick = (appId: WindowId) => {
+    onClickSound();
+    if (appId === "terminal") {
+      setOpenWindows((current) =>
+        current.includes("terminal")
+          ? current.filter((item) => item !== "terminal")
+          : [...current, "terminal"]
+      );
+    } else {
+      onSectionChange(appId);
+      setOpenWindows((current) => {
+        const hasTerm = current.includes("terminal");
+        return hasTerm ? ["terminal", appId] : [appId];
+      });
+    }
   };
 
   const activeData = useMemo(() => {
@@ -350,13 +360,7 @@ export function KrishnaOS({
                   ? "border-neonBlue bg-neonBlue/20 shadow-[0_0_15px_rgba(0,240,255,0.3)]"
                   : "border-neonBlue/30 bg-black/50 hover:border-neonBlue/70 hover:bg-neonBlue/15"
               )}
-              onClick={() => {
-                onClickSound();
-                toggleWindow(app.id);
-                if (app.id !== "terminal") {
-                  onSectionChange(app.id);
-                }
-              }}
+              onClick={() => handleAppClick(app.id)}
             >
               <Icon className="h-4 w-4 text-neonBlue sm:h-5 sm:w-5" />
               <p className="mt-1.5 text-center font-mono text-[0.62rem] text-textMain truncate w-full">
@@ -368,12 +372,19 @@ export function KrishnaOS({
       </div>
 
       {/* Active Windows Grid */}
-      <div className="relative z-10 mt-3 grid flex-1 min-h-0 gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+      <div
+        className={clsx(
+          "relative z-10 mt-3 flex-1 min-h-0",
+          openWindows.includes("terminal") && openWindows.some((id) => id !== "terminal")
+            ? "grid grid-cols-1 gap-3 lg:grid-cols-[1.1fr_0.9fr]"
+            : "grid grid-cols-1 gap-3"
+        )}
+      >
         <AnimatePresence>
           {openWindows.includes("terminal") && (
             <motion.div
               key="terminal-window"
-              className="rounded-xl border border-aiGreen/30 bg-black/60 p-2 shadow-[0_0_20px_rgba(0,255,156,0.15)]"
+              className="rounded-xl border border-aiGreen/30 bg-black/60 p-2 shadow-[0_0_20px_rgba(0,255,156,0.15)] flex flex-col min-h-0"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
@@ -387,16 +398,26 @@ export function KrishnaOS({
           {openWindows.some((windowId) => windowId !== "terminal") && (
             <motion.div
               key="content-window"
-              className="scrollbar-thin min-h-0 overflow-y-auto rounded-xl border border-neonBlue/30 bg-black/65 p-3 sm:p-4 shadow-[0_0_20px_rgba(0,240,255,0.15)]"
+              className="scrollbar-thin min-h-0 overflow-y-auto rounded-xl border border-neonBlue/30 bg-black/65 p-3 sm:p-4 shadow-[0_0_20px_rgba(0,240,255,0.15)] flex flex-col"
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 12 }}
             >
               <div className="mb-3 flex items-center justify-between border-b border-neonBlue/25 pb-2">
-                <p className="font-display text-xs uppercase tracking-[0.18em] text-neonBlue">
+                <p className="font-display text-xs uppercase tracking-[0.18em] text-neonBlue font-semibold">
                   {sectionTitles[activeSection]}
                 </p>
-                <FileCode2 className="h-4 w-4 text-neonBlue" />
+                <div className="flex items-center gap-2">
+                  <FileCode2 className="h-4 w-4 text-neonBlue" />
+                  <button
+                    type="button"
+                    onClick={() => setOpenWindows((cur) => cur.filter((id) => id === "terminal"))}
+                    className="rounded p-0.5 text-textMain/50 hover:bg-white/10 hover:text-white transition-colors"
+                    title="Close Window"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
               {activeData}
             </motion.div>

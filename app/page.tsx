@@ -293,26 +293,24 @@ export default function HomePage() {
               onClickSound={playClick}
             />
           </div>
+        ) : mode === "city" ? (
+          <div id="interactive-workspace" className="scroll-mt-6">
+            <CyberpunkCity
+              key="city-scene"
+              activeSection={activeSection}
+              onSelectSection={selectSection}
+              onClickSound={playClick}
+            />
+          </div>
         ) : (
           <div id="interactive-workspace" className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr] scroll-mt-6">
-            <AnimatePresence mode="wait">
-              {mode === "brain" ? (
-                <BrainInterface
-                  key="brain-scene"
-                  activeSection={activeSection}
-                  onSelectSection={selectSection}
-                  onClickSound={playClick}
-                  secretMode={secretMode}
-                />
-              ) : (
-                <CyberpunkCity
-                  key="city-scene"
-                  activeSection={activeSection}
-                  onSelectSection={selectSection}
-                  onClickSound={playClick}
-                />
-              )}
-            </AnimatePresence>
+            <BrainInterface
+              key="brain-scene"
+              activeSection={activeSection}
+              onSelectSection={selectSection}
+              onClickSound={playClick}
+              secretMode={secretMode}
+            />
             <SectionPanel activeSection={activeSection} />
           </div>
         )}

@@ -86,7 +86,7 @@ export function CyberpunkCity({
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_80%,rgba(0,240,255,0.12),transparent_50%)] pointer-events-none" />
 
       {/* Top Districts Bar */}
-      <div className="relative z-10 flex gap-2 overflow-x-auto pb-1.5 scrollbar-none sm:grid sm:grid-cols-4 lg:grid-cols-7">
+      <div className="relative z-10 flex gap-2 overflow-x-auto pb-2 scrollbar-none sm:grid sm:grid-cols-4 lg:grid-cols-7">
         {districts.map((district, index) => {
           const isActive = district.id === activeSection;
           const Icon = district.icon;
@@ -96,7 +96,7 @@ export function CyberpunkCity({
               key={district.id}
               type="button"
               className={clsx(
-                "group relative flex shrink-0 sm:shrink min-w-[125px] sm:min-w-0 flex-col justify-between rounded-xl border p-2 text-left backdrop-blur-md transition-all duration-300",
+                "group relative flex shrink-0 sm:shrink min-w-[130px] sm:min-w-0 flex-col justify-between rounded-xl border p-2.5 text-left backdrop-blur-md transition-all duration-300",
                 isActive
                   ? "border-cyberPink bg-cyberPink/20 shadow-[0_0_20px_rgba(255,47,209,0.45)]"
                   : "border-cyberPink/30 bg-black/50 hover:border-cyberPink/70 hover:bg-cyberPink/10"
@@ -112,7 +112,7 @@ export function CyberpunkCity({
               <div className="flex items-center justify-between">
                 <Icon
                   className={clsx(
-                    "h-3.5 w-3.5 transition-colors",
+                    "h-4 w-4 transition-colors",
                     isActive ? "text-cyberPink" : "text-neonBlue group-hover:text-cyberPink"
                   )}
                 />
@@ -120,11 +120,11 @@ export function CyberpunkCity({
                   <span className="h-1.5 w-1.5 rounded-full bg-cyberPink shadow-[0_0_8px_#FF2FD1]" />
                 )}
               </div>
-              <div className="mt-1">
-                <p className="font-display text-[0.64rem] uppercase tracking-[0.14em] text-white truncate">
+              <div className="mt-1.5">
+                <p className="font-display text-xs uppercase tracking-wider text-white font-semibold whitespace-nowrap">
                   {district.label}
                 </p>
-                <p className="line-clamp-1 font-body text-[0.58rem] text-textMain/65">
+                <p className="font-body text-[0.62rem] text-textMain/70 truncate">
                   {district.hint}
                 </p>
               </div>
@@ -171,7 +171,7 @@ export function CyberpunkCity({
             </div>
 
             {/* Scrollable Project Cards Grid */}
-            <div className="scrollbar-thin grid flex-1 min-h-0 grid-cols-1 gap-3.5 overflow-y-auto pr-1 md:grid-cols-2">
+            <div className="scrollbar-thin grid flex-1 min-h-0 grid-cols-1 gap-3.5 overflow-y-auto pr-1 md:grid-cols-2 lg:grid-cols-3">
               {filteredProjects.map((project, index) => {
                 const isAward = project.badge?.includes("1st Place") || project.badge?.includes("Finalist");
                 const hasLive = Boolean(project.link);
@@ -452,7 +452,7 @@ export function CyberpunkCity({
             </div>
 
             {/* Scrollable Certificate Cards Grid */}
-            <div className="scrollbar-thin grid flex-1 min-h-0 grid-cols-1 gap-3 overflow-y-auto pr-1 md:grid-cols-2">
+            <div className="scrollbar-thin grid flex-1 min-h-0 grid-cols-1 gap-3 overflow-y-auto pr-1 md:grid-cols-2 lg:grid-cols-3">
               {filteredCertificates.map((cert, index) => {
                 const isAward = cert.category === "awards";
                 return (
@@ -484,7 +484,7 @@ export function CyberpunkCity({
                       </div>
 
                       {/* Title */}
-                      <h3 className="mt-1.5 font-display text-sm font-semibold tracking-wide text-white group-hover:text-neonBlue transition-colors">
+                      <h3 className="mt-1.5 font-display text-sm font-semibold tracking-wide text-white group-hover:text-neonBlue transition-colors break-words">
                         {cert.title}
                       </h3>
 
